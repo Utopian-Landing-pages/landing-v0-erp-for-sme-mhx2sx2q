@@ -1,0 +1,350 @@
+
+
+```tsx file="app/page.tsx"
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { 
+  Menu, 
+  X, 
+  ArrowRight, 
+  CheckCircle, 
+  Users, 
+  BarChart3, 
+  Shield, 
+  Zap, 
+  Globe, 
+  TrendingUp,
+  Star,
+  ChevronDown,
+  ChevronUp,
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram
+} from 'lucide-react'
+import Image from 'next/image'
+
+export default function LandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const { scrollYProgress } = useScroll()
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'features', 'about', 'pricing', 'testimonials', 'faq', 'contact']
+      const scrollPosition = window.scrollY + 100
+
+      for (const section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const { offsetTop, offsetHeight } = element
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+    setIsMenuOpen(false)
+  }
+
+  const navItems = [
+    { id: 'home', label: 'Home' },
+    { id: 'features', label: 'Features' },
+    { id: 'about', label: 'About' },
+    { id: 'pricing', label: 'Pricing' },
+    { id: 'testimonials', label: 'Testimonials' },
+    { id: 'faq', label: 'FAQ' },
+    { id: 'contact', label: 'Contact' }
+  ]
+
+  const features = [
+    {
+      icon: <BarChart3 className="w-8 h-8" />,
+      title: "Advanced Analytics",
+      description: "Get real-time insights into your business performance with comprehensive dashboards and reporting tools."
+    },
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: "Customer Management",
+      description: "Manage customer relationships, track interactions, and improve customer satisfaction with our CRM module."
+    },
+    {
+      icon: <Shield className="w-8 h-8" />,
+      title: "Secure & Compliant",
+      description: "Enterprise-grade security with data encryption, role-based access, and compliance with industry standards."
+    },
+    {
+      icon: <Zap className="w-8 h-8" />,
+      title: "Automation Tools",
+      description: "Automate repetitive tasks, streamline workflows, and increase productivity across your organization."
+    },
+    {
+      icon: <Globe className="w-8 h-8" />,
+      title: "Multi-Location Support",
+      description: "Manage multiple locations, warehouses, and branches from a single, unified platform."
+    },
+    {
+      icon: <TrendingUp className="w-8 h-8" />,
+      title: "Scalable Growth",
+      description: "Scale your operations seamlessly as your business grows with our flexible and modular architecture."
+    }
+  ]
+
+  const pricingPlans = [
+    {
+      name: "Starter",
+      price: "$49",
+      period: "/month",
+      description: "Perfect for small businesses just getting started",
+      features: [
+        "Up to 5 users",
+        "Basic reporting",
+        "Customer management",
+        "Inventory tracking",
+        "Email support"
+      ],
+      popular: false
+    },
+    {
+      name: "Professional",
+      price: "$99",
+      period: "/month",
+      description: "Ideal for growing businesses with advanced needs",
+      features: [
+        "Up to 25 users",
+        "Advanced analytics",
+        "Multi-location support",
+        "Automation tools",
+        "Priority support",
+        "API access"
+      ],
+      popular: true
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      period: "",
+      description: "Tailored solutions for large organizations",
+      features: [
+        "Unlimited users",
+        "Custom integrations",
+        "Dedicated support",
+        "Advanced security",
+        "Custom training",
+        "SLA guarantee"
+      ],
+      popular: false
+    }
+  ]
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      title: "CEO",
+      company: "TechStart Solutions",
+      image: "https://source.unsplash.com/300x300/?businesswoman,professional",
+      rating: 5,
+      text: "This ERP system transformed our business operations. We've seen a 40% increase in efficiency and our team loves how intuitive it is."
+    },
+    {
+      name: "Michael Chen",
+      title: "Operations Manager",
+      company: "Global Manufacturing Co.",
+      image: "https://source.unsplash.com/300x300/?businessman,asian",
+      rating: 5,
+      text: "The multi-location support is exactly what we needed. Managing our 15 warehouses has never been easier."
+    },
+    {
+      name: "Emily Rodriguez",
+      title: "Finance Director",
+      company: "Retail Plus Inc.",
+      image: "https://source.unsplash.com/300x300/?businesswoman,hispanic",
+      rating: 5,
+      text: "The reporting and analytics features give us insights we never had before. ROI was achieved within 3 months."
+    }
+  ]
+
+  const faqs = [
+    {
+      question: "How long does implementation take?",
+      answer: "Implementation typically takes 2-6 weeks depending on your business size and complexity. Our team provides full support throughout the process."
+    },
+    {
+      question: "Can I migrate data from my current system?",
+      answer: "Yes, we provide comprehensive data migration services. Our team will help you transfer all your existing data safely and accurately."
+    },
+    {
+      question: "Is training included?",
+      answer: "All plans include basic training. Professional and Enterprise plans include comprehensive training programs and ongoing support."
+    },
+    {
+      question: "What integrations are available?",
+      answer: "We integrate with popular tools like QuickBooks, Salesforce, Shopify, and many others. Custom integrations are available for Enterprise customers."
+    },
+    {
+      question: "Is my data secure?",
+      answer: "Absolutely. We use enterprise-grade encryption, regular security audits, and comply with industry standards including SOC 2 and GDPR."
+    },
+    {
+      question: "Can I cancel anytime?",
+      answer: "Yes, you can cancel your subscription at any time. We offer a 30-day money-back guarantee for new customers."
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <div className="text-2xl font-bold" style={{ color: '#ff2700' }}>
+                ERPro
+              </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      activeSection === item.id
+                        ? 'text-white'
+                        : 'text-gray-700 hover:text-gray-900'
+                    }`}
+                    style={{
+                      backgroundColor: activeSection === item.id ? '#ff2700' : 'transparent'
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="hidden md:block">
+              <button
+                className="text-white px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: '#ff2700' }}
+              >
+                Get Started
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-gray-700 hover:text-gray-900"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 w-full text-left"
+                >
+                  {item.label}
+                </button>
+              ))}
+              <button
+                className="w-full text-white px-3 py-2 rounded-md font-medium mt-4"
+                style={{ backgroundColor: '#ff2700' }}
+              >
+                Get Started
+              </button>
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden">
+        <motion.div 
+          className="absolute inset-0 z-0"
+          style={{ y }}
+        >
+          <Image
+            src="https://source.unsplash.com/1920x1080/?business,office,technology"
+            alt="Business Technology"
+            fill
+            className="object-cover opacity-10"
+          />
+        </motion.div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Streamline Your Business with{' '}
+                <span style={{ color: '#ff2700' }}>Smart ERP</span>
+              </h1>
+              <p className="text-xl text-gray-600 mb-8">
+                Powerful, intuitive ERP software designed specifically for small and medium enterprises. 
+                Manage everything from inventory to customer relationships in one unified platform.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  className="text-white px-8 py-4 rounded-lg font-medium text-lg hover:opacity-90 transition-opacity flex items-center justify-center"
+                  style={{ backgroundColor: '#ff2700' }}
+                >
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </button>
+                <button className="border-2 px-8 py-4 rounded-lg font-medium text-lg hover:bg-gray-50 transition-colors"
+                  style={{ borderColor: '#ff2700', color: '#ff2700' }}
+                >
+                  Watch Demo
+                </button>
+              </div>
+              <div className="mt-12 flex items-center space-x-8">
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: '#ff2700' }}>500+</div>
+                  <div className="text-gray-600">Happy Customers</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: '#ff2700' }}>99.9%</div>
+                  <div className="text-gray-600">Uptime</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold" style={{ color: '#ff2700' }}>24/7</div>
+                  <div className="text-gray-600">Support</div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <motion.div
